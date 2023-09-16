@@ -1,5 +1,8 @@
 My project/Library/*
 My project/Logs/*
 My project/Temp/*
+My project/.vs/*
+My project/obj/*
 My project/.vsconfig
 My project/*sln
+My project/*.csproj
