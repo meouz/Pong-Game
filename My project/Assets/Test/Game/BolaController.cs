@@ -27,7 +27,8 @@ public class BolaController : MonoBehaviour
     // }
 
     public void ResetBola() {
-        transform.position = new Vector3(resetPosition.x, resetPosition.y, 2);
+        transform.position = new Vector3((resetPosition.x), (resetPosition.y), 2);
+        rig.velocity = speed*(-1);
     }
 
     public void ActiveSpeedUp(float magnitude) {

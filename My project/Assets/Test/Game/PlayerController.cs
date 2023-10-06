@@ -9,40 +9,76 @@ public class PlayerController : MonoBehaviour
     public KeyCode downKey;
     private Rigidbody2D rig;
 
-    // Start is called before the first frame update
+    private float timerPaddleSpeedUp;
+    private float timerPaddleLevelUp;
+
+    public float magnitudePaddleSpeedUp;
+    private bool PaddleLevelUp;
+    private bool PaddleSpeedUp;
+
     private void Start() {
         rig = GetComponent<Rigidbody2D>();    
+        timerPaddleLevelUp = 0;
+        timerPaddleSpeedUp = 0;
+        PaddleLevelUp = false;
+        PaddleSpeedUp = false;
     }
 
-    // Update is called once per frame
     private void Update() {
-        ////return ke zero ketika tidak ada input
-        ////Vector2 movement = Vector3.zero;
-
         MoveObject(GetInput());
 
-        //get input
-        //Vector3 movement = GetInput();
-        //move object
-        //MoveObject(movement);
+        if (PaddleSpeedUp == true) {
+            timerPaddleSpeedUp += Time.deltaTime;
+
+            if (timerPaddleSpeedUp > 5) {
+                DeActivePaddleSpeedUp(magnitudePaddleSpeedUp);
+                timerPaddleSpeedUp = 0;
+            }
+        }
+
+        if (PaddleLevelUp == true) {
+            timerPaddleLevelUp += Time.deltaTime;
+
+            if (timerPaddleLevelUp > 5) {
+                DeActivePaddleLevelUp();
+                timerPaddleLevelUp = 0;
+            }
+        }
+
     }
 
     private Vector2 GetInput() {
         if (Input.GetKey(upKey)) {
-            //atas
-            //movement = Vector3.right * speed;
-            return Vector2.up * speed; //seharusnya Vector2.up tapi kenapa outputnya ke kiri?
+            return Vector2.up * speed;
         }
         else if (Input.GetKey(downKey)) {
-            //bawah
-            //movement = Vector3.left * speed;
             return Vector2.down * speed;
         }
         return Vector2.zero;
     }
+
     private void MoveObject(Vector2 movement) {
-        //transform.Translate(movement * Time.deltaTime); karena sekarang sudah menggunakan velocity
         Debug.Log("Test: " +movement); //debugging x,y
         rig.velocity = movement;
+    }
+
+    public void ActivePaddleSpeedUp(float magnitude) {
+        speed *= (int) (magnitude);
+        PaddleSpeedUp = true;
+    }
+
+    public void DeActivePaddleSpeedUp(float magnitude) {
+        speed /= (int) (magnitude);
+        PaddleSpeedUp = false;
+    }
+
+    public void ActivePaddleLevelUp(float scale) {
+        transform.localScale = new Vector3(scale, 0.2f, 1f);
+        PaddleLevelUp = true;
+    }
+
+    public void DeActivePaddleLevelUp() {
+        transform.localScale = new Vector3(1f, 0.2f, 1f);
+        PaddleLevelUp = false;
     }
 }
